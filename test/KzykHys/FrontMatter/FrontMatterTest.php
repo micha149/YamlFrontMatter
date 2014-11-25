@@ -43,6 +43,29 @@ layout: layout.html
 <body>Hello</body>', $dump);
     }
 
+    public function testParsePathToFile()
+    {
+        $document = FrontMatter::parse(__DIR__ . '/Resources/markdown.md');
+
+        $this->assertEquals(array(
+            'title' => 'Sample Post',
+            'category' => 'technology',
+            'tags' => array('PHP', 'Yaml', 'FrontMatter'),
+            'vars' => array(
+                'pingback' => 'http://example.com/pingback?id={{ post.id }}',
+                'description' => null
+            )
+        ), $document->getConfig());
+
+        $this->assertEquals('
+Subtitle
+--------
+
+### Subtitle
+
+Lorem Ipsum ...', $document->getContent());
+    }
+
     public function testInvalidInput()
     {
         $content  = file_get_contents(__DIR__ . '/Resources/invalid.html');
